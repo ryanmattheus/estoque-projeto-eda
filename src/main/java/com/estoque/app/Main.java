@@ -60,13 +60,13 @@ public class Main {
         System.out.println();
         System.out.println("--------------------- MENU ---------------------");
         System.out.println(" 1  - Cadastrar produto");
-        System.out.println(" 2  - Buscar produto por codigo (AVL)");
-        System.out.println(" 3  - Buscar produto por nome (Hash)");
-        System.out.println(" 4  - Listar catalogo ordenado por codigo (AVL em-ordem)");
-        System.out.println(" 5  - Registrar venda (saida de estoque)");
+        System.out.println(" 2  - Buscar produto por codigo");
+        System.out.println(" 3  - Buscar produto por nome");
+        System.out.println(" 4  - Listar catalogo ordenado por codigo"); //avl em ordem
+        System.out.println(" 5  - Registrar venda: ");//saida de estoque
         System.out.println(" 6  - Registrar entrada manual de estoque");
-        System.out.println(" 7  - Listar produtos mais criticos (Heap)");
-        System.out.println(" 8  - Processar proximo pedido da fila (Fila = 2 Pilhas)");
+        System.out.println(" 7  - Listar produtos mais criticos ");//Heap
+        System.out.println(" 8  - Processar proximo pedido da fila: "); //Fila = 2 Pilhas
         System.out.println(" 9  - Processar TODOS os pedidos pendentes");
         System.out.println(" 10 - Remover produto");
         System.out.println(" 11 - Ordenar todos os produtos por estoque (heapsort)");
@@ -148,13 +148,20 @@ public class Main {
         System.out.println(">> Entrada registrada.");
     }
 
-    private static void listarProdutosCriticos() {
-        System.out.print("Quantos produtos mostrar (top-k)? ");
-        int k = Integer.parseInt(leitor.nextLine().trim());
-        List<Produto> criticos = sistema.listarProdutosMaisCriticos(k);
-        System.out.println(">> Produtos com maior prioridade de reposicao (menor estoque primeiro):");
-        criticos.forEach(p -> System.out.println("   " + p));
-    }
+    private static void listarProdutosCriticos() { // forma de mostrar apenas os criticos(os que estao abaixo do minimo:
+           List<Produto> criticos = sistema.listarProdutosMaisCriticos(sistema.totalDeProdutos())
+            .stream()
+            .filter(Produto::precisaReposicao)
+            .toList();
+
+      if (criticos.isEmpty()) {
+          System.out.println(">> Nenhum produto em estado critico no momento.");
+          return;
+      }
+
+      System.out.println(">> Produtos em estado critico (estoque <= minimo), do mais urgente ao menos urgente:");
+      criticos.forEach(p -> System.out.println("   " + p));
+  }
 
     private static void processarProximoPedido() {
         if (!sistema.existePedidoPendente()) {
