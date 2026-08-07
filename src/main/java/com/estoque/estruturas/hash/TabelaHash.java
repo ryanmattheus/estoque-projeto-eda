@@ -10,14 +10,11 @@ import java.util.Optional;
 
 /**
  * Tabela Hash generica com tratamento de colisao por ENCADEAMENTO
- * (chaining), utilizando a Lista Simplesmente Encadeada implementada
- * pelo grupo como estrutura de cada "balde" (bucket).
- *
- * Usada no sistema para busca rapida de produto por NOME (chave String),
- * com custo medio O(1) para busca/insercao/remocao.
- *
- * Fator de carga (load factor) e monitorado; quando ultrapassa 0.75 a
- * tabela e redimensionada (rehash), mantendo o desempenho medio O(1).
+ * (chaining), utilizando a Lista Simplesmente Encadeada implementada como
+ * estrutura de cada "balde" (bucket).
+ * 
+ * Fator de carga - quando ultrapassa 0.75 a tabela é redimensionada (rehash),
+ * mantendo o desempenho medio O(1).
  */
 public class TabelaHash<K, V> {
 
@@ -33,7 +30,7 @@ public class TabelaHash<K, V> {
         this.quantidadeElementos = 0;
     }
 
-    /** Par chave/valor armazenado em cada no da lista encadeada do balde. */
+    // Par chave/valor armazenado em cada no da lista encadeada do balde
     private static class Entrada<K, V> {
         final K chave;
         V valor;
@@ -45,8 +42,10 @@ public class TabelaHash<K, V> {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Entrada)) return false;
+            if (this == o)
+                return true;
+            if (!(o instanceof Entrada))
+                return false;
             Entrada<?, ?> outra = (Entrada<?, ?>) o;
             return Objects.equals(chave, outra.chave);
         }
@@ -62,11 +61,7 @@ public class TabelaHash<K, V> {
         }
     }
 
-    // ---------------------------------------------------------------
-    // API publica
-    // ---------------------------------------------------------------
-
-    /** Insere ou atualiza um par chave/valor. Custo medio O(1). */
+    // Insere ou atualiza um par chave/valor. Custo medio O(1)
     public void inserir(K chave, V valor) {
         if (((double) (quantidadeElementos + 1)) / baldes.length > FATOR_CARGA_MAXIMO) {
             redimensionar();
@@ -92,7 +87,7 @@ public class TabelaHash<K, V> {
         Log.log("HASH", "inserir(" + chave + ") -> inserido no balde " + indice + " | total=" + quantidadeElementos);
     }
 
-    /** Busca o valor associado a chave. Custo medio O(1). */
+    // Busca o valor associado a chave. Custo medio O(1).
     public Optional<V> buscar(K chave) {
         int indice = indiceParaChave(chave);
         ListaSimplesmenteEncadeada<Entrada<K, V>> balde = baldes[indice];
@@ -112,7 +107,7 @@ public class TabelaHash<K, V> {
         return buscar(chave).isPresent();
     }
 
-    /** Remove a entrada associada a chave. Custo medio O(1). */
+    // Remove a entrada associada a chave. Custo medio O(1)
     public boolean remover(K chave) {
         int indice = indiceParaChave(chave);
         ListaSimplesmenteEncadeada<Entrada<K, V>> balde = baldes[indice];
@@ -159,10 +154,7 @@ public class TabelaHash<K, V> {
         return resultado;
     }
 
-    // ---------------------------------------------------------------
     // Funcao hash e redimensionamento
-    // ---------------------------------------------------------------
-
     private int indiceParaChave(K chave) {
         int hash = Objects.hashCode(chave);
         // desloca os bits para reduzir colisoes de hashCodes com padroes proximos

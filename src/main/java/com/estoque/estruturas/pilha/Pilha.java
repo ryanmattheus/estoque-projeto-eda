@@ -5,17 +5,6 @@ import com.estoque.util.Log;
 
 import java.util.NoSuchElementException;
 
-/**
- * Pilha (Stack) generica, implementada utilizando uma
- * Lista Simplesmente Encadeada (requisito do projeto).
- *
- * empilhar (push)      -> insercao no inicio da lista   -> O(1)
- * desempilhar (pop)    -> remocao do inicio da lista     -> O(1)
- * topo (peek)          -> leitura do inicio da lista      -> O(1)
- *
- * A Fila do sistema e construida exclusivamente a partir de duas
- * instancias desta Pilha (ver classe Fila).
- */
 public class Pilha<T> {
 
     private final ListaSimplesmenteEncadeada<T> lista;
@@ -24,13 +13,13 @@ public class Pilha<T> {
         this.lista = new ListaSimplesmenteEncadeada<>();
     }
 
-    /** Empilha (push) um elemento no topo. Custo O(1). */
+    // Empilha (push) um elemento no topo. Custo O(1)
     public void empilhar(T valor) {
         lista.inserirInicio(valor);
         Log.log("PILHA", "push(" + valor + ") -> tamanho=" + lista.tamanho());
     }
 
-    /** Desempilha (pop) o elemento do topo. Custo O(1). */
+    // Desempilha (pop) o elemento do topo. Custo O(1)
     public T desempilhar() {
         if (estaVazia()) {
             throw new NoSuchElementException("Pilha vazia: nao e possivel desempilhar.");
@@ -40,7 +29,7 @@ public class Pilha<T> {
         return valor;
     }
 
-    /** Retorna o elemento do topo sem remove-lo. Custo O(1). */
+    // Retorna o elemento do topo sem remove-lo. Custo O(1)
     public T topo() {
         if (estaVazia()) {
             throw new NoSuchElementException("Pilha vazia: nao ha topo.");

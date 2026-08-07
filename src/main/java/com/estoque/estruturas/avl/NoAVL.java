@@ -1,9 +1,5 @@
 package com.estoque.estruturas.avl;
 
-/**
- * No de uma Arvore AVL (Arvore Binaria de Busca balanceada).
- * Armazena um par chave/valor (ex.: codigo do produto -> Produto).
- */
 public class NoAVL<K extends Comparable<K>, V> {
 
     K chave;

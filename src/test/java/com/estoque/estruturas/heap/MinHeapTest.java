@@ -26,7 +26,7 @@ class MinHeapTest {
 
     @Test
     void inserirEExtrairMinimoDevemRetornarOrdemCrescente() {
-        int[] valores = {5, 3, 8, 1, 9, 2};
+        int[] valores = { 5, 3, 8, 1, 9, 2 };
         for (int v : valores) {
             heap.inserir(v);
         }
@@ -54,18 +54,18 @@ class MinHeapTest {
 
     @Test
     void heapsortDeveRetornarListaOrdenadaSemAlterarHeapOriginal() {
-        int[] valores = {9, 1, 5, 3, 7};
+        int[] valores = { 9, 1, 5, 3, 7 };
         for (int v : valores) {
             heap.inserir(v);
         }
         List<Integer> ordenado = heap.heapsort();
         assertEquals(List.of(1, 3, 5, 7, 9), ordenado);
-        assertEquals(5, heap.tamanho()); // heap original preservada
+        assertEquals(5, heap.tamanho());
     }
 
     @Test
     void obterMenoresDeveRetornarTopKSemAlterarHeap() {
-        int[] valores = {9, 1, 5, 3, 7};
+        int[] valores = { 9, 1, 5, 3, 7 };
         for (int v : valores) {
             heap.inserir(v);
         }
@@ -76,18 +76,18 @@ class MinHeapTest {
 
     @Test
     void atualizarDeveReordenarQuandoPrioridadeMuda() {
-        // Simula objetos mutaveis via wrapper simples com equals por identidade
+
         MinHeap<int[]> heapArrays = new MinHeap<>(Comparator.comparingInt(a -> a[0]));
-        int[] itemA = {10};
-        int[] itemB = {20};
-        int[] itemC = {30};
+        int[] itemA = { 10 };
+        int[] itemB = { 20 };
+        int[] itemC = { 30 };
         heapArrays.inserir(itemA);
         heapArrays.inserir(itemB);
         heapArrays.inserir(itemC);
 
         assertSame(itemA, heapArrays.espiarMinimo());
 
-        itemC[0] = 1; // agora itemC deveria ser o minimo
+        itemC[0] = 1;
         heapArrays.atualizar(itemC);
 
         assertSame(itemC, heapArrays.espiarMinimo());

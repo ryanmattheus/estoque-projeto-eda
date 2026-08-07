@@ -44,27 +44,24 @@ class ArvoreAVLTest {
 
     @Test
     void insercaoSequencialCrescenteDeveManterArvoreBalanceada() {
-        // Insercao em ordem crescente forcaria uma lista encadeada em BST
-        // comum, mas a AVL deve se rebalancear via rotacoes a esquerda.
+
         for (int i = 1; i <= 15; i++) {
             arvore.inserir(i, "V" + i);
         }
         assertEquals(15, arvore.tamanho());
-        // Altura de uma AVL com 15 nos deve ser proxima de log2(15) ~ 4
+
         assertTrue(alturaAproximada() <= 5, "Arvore deveria estar balanceada");
     }
 
     private int alturaAproximada() {
-        // Verifica indiretamente o balanceamento: percurso em ordem deve
-        // retornar exatamente os 15 elementos ordenados corretamente,
-        // o que so ocorre se as rotacoes preservaram a propriedade de BST.
+
         List<String> valores = arvore.emOrdem();
         return (int) Math.ceil(Math.log(valores.size() + 1) / Math.log(2)) + 1;
     }
 
     @Test
     void emOrdemDeveRetornarValoresOrdenadosPelaChave() {
-        int[] chaves = {50, 20, 70, 10, 30, 60, 80};
+        int[] chaves = { 50, 20, 70, 10, 30, 60, 80 };
         for (int chave : chaves) {
             arvore.inserir(chave, "P" + chave);
         }
@@ -85,11 +82,11 @@ class ArvoreAVLTest {
 
     @Test
     void removerNoComDoisFilhosDeveManterPropriedadeBST() {
-        int[] chaves = {50, 30, 70, 20, 40, 60, 80};
+        int[] chaves = { 50, 30, 70, 20, 40, 60, 80 };
         for (int chave : chaves) {
             arvore.inserir(chave, "P" + chave);
         }
-        arvore.remover(50); // raiz com dois filhos
+        arvore.remover(50);
         assertTrue(arvore.buscar(50).isEmpty());
         assertEquals(6, arvore.tamanho());
 

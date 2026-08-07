@@ -1,20 +1,12 @@
 package com.estoque.util;
 
-/**
- * Utilitario simples de log usado pelas estruturas de dados para registrar
- * as principais operacoes (insercao, remocao, busca, rotacoes em AVL,
- * colisoes na Tabela Hash, operacoes de heap, push/pop na pilha, etc).
- *
- * Isso facilita a depuracao, ajuda a entender o funcionamento interno das
- * estruturas e enriquece a apresentacao do projeto (log em tempo real de
- * cada operacao critica).
- */
+// Classe utilitaria para log de eventos do sistema, com possibilidade de ligar/desligar globalmente.
 public final class Log {
 
-    /** Liga/desliga os logs globalmente (util para silenciar em testes). */
     private static boolean ativo = true;
 
-    private Log() { }
+    private Log() {
+    }
 
     public static void ativar() {
         ativo = true;

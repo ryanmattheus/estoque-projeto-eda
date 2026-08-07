@@ -6,16 +6,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-/**
- * Lista Simplesmente Encadeada generica.
- *
- * Estrutura de dados base utilizada por outras estruturas do projeto:
- *  - Pilha (empilhar/desempilhar usam insercao/remocao no inicio -> O(1))
- *  - Tabela Hash (cada "balde"/bucket e uma lista encadeada -> chaining)
- *
- * Todos os metodos podem ser implementados de forma iterativa (usado aqui
- * para evitar estouro de pilha de chamadas em listas grandes).
- */
 public class ListaSimplesmenteEncadeada<T> implements Iterable<T> {
 
     private No<T> inicio;
@@ -28,7 +18,7 @@ public class ListaSimplesmenteEncadeada<T> implements Iterable<T> {
         this.tamanho = 0;
     }
 
-    /** Insere no inicio da lista. Custo O(1). */
+    // Insere no inicio da lista. Custo O(1).
     public void inserirInicio(T valor) {
         No<T> novo = new No<>(valor);
         if (estaVazia()) {
@@ -42,7 +32,7 @@ public class ListaSimplesmenteEncadeada<T> implements Iterable<T> {
         Log.log("LISTA", "inserirInicio(" + valor + ") -> tamanho=" + tamanho);
     }
 
-    /** Insere no final da lista. Custo O(1) (mantemos ponteiro para o fim). */
+    // Insere no final da lista. Custo O(1) (mantemos ponteiro para o fim)
     public void inserirFim(T valor) {
         No<T> novo = new No<>(valor);
         if (estaVazia()) {
@@ -56,7 +46,7 @@ public class ListaSimplesmenteEncadeada<T> implements Iterable<T> {
         Log.log("LISTA", "inserirFim(" + valor + ") -> tamanho=" + tamanho);
     }
 
-    /** Remove e retorna o elemento do inicio da lista. Custo O(1). */
+    // Remove e retorna o elemento do inicio da lista. Custo O(1)
     public T removerInicio() {
         if (estaVazia()) {
             throw new NoSuchElementException("Lista vazia: nao ha elemento para remover.");
@@ -71,11 +61,9 @@ public class ListaSimplesmenteEncadeada<T> implements Iterable<T> {
         return removido.getValor();
     }
 
-    /**
-     * Remove a primeira ocorrencia do valor informado (comparado via equals).
-     * Custo O(n) - implementacao iterativa.
-     * @return true se removeu, false se nao encontrado.
-     */
+    // Remove a primeira ocorrencia do valor informado (comparado via equals). Custo
+    // O(n) - implementacao iterativa.
+    // return true se removeu, false se nao encontrado.
     public boolean remover(T valor) {
         if (estaVazia()) {
             return false;
@@ -103,7 +91,7 @@ public class ListaSimplesmenteEncadeada<T> implements Iterable<T> {
         return false;
     }
 
-    /** Busca (contains) um valor na lista. Custo O(n) - iterativo. */
+    // Busca (contains) um valor na lista. Custo O(n) - iterativo
     public boolean contem(T valor) {
         No<T> atual = inicio;
         while (atual != null) {
@@ -115,7 +103,7 @@ public class ListaSimplesmenteEncadeada<T> implements Iterable<T> {
         return false;
     }
 
-    /** Retorna o valor no inicio da lista sem remover. */
+    // Retorna o valor no inicio da lista sem remover
     public T verInicio() {
         if (estaVazia()) {
             throw new NoSuchElementException("Lista vazia.");

@@ -17,16 +17,8 @@ import java.util.Set;
 
 /**
  * Sistema de Controle de Estoque com Reposicao Automatica.
- *
- * Integra as quatro estruturas de dados exigidas pelo projeto, cada uma
- * responsavel por uma funcionalidade especifica:
- *
- *  - Fila (com duas Pilhas)  -> pedidos de compra a processar em ordem (FIFO).
- *  - Heap (min-heap)         -> produtos com estoque mais baixo tem prioridade
- *                                de reposicao (topo da heap).
- *  - Arvore AVL               -> catalogo de produtos indexado por CODIGO
- *                                (busca/insercao/remocao em O(log n)).
- *  - Tabela Hash (chaining)   -> busca rapida de produto por NOME em O(1) medio.
+ * Integra as quatro estruturas de dados: fila, heap, arvore AVL e tabela hash
+ * cada uma responsavel por uma funcionalidade especifica
  */
 public class SistemaEstoque {
 
@@ -44,13 +36,11 @@ public class SistemaEstoque {
         this.codigosComReposicaoAutomaticaPendente = new HashSet<>();
     }
 
-    // ---------------------------------------------------------------
     // Cadastro / consulta / remocao de produtos
-    // ---------------------------------------------------------------
 
-    /** Cadastra um novo produto nas tres estruturas de indexacao (AVL, Hash, Heap). */
+    // Cadastra um novo produto nas tres estruturas de indexacao (AVL, Hash, Heap)
     public Produto cadastrarProduto(int codigo, String nome, int quantidadeEstoque,
-                                     int estoqueMinimo, double preco, String fornecedor) {
+            int estoqueMinimo, double preco, String fornecedor) {
         if (catalogoPorCodigo.contem(codigo)) {
             throw new IllegalArgumentException("Ja existe um produto com o codigo " + codigo);
         }
@@ -68,17 +58,17 @@ public class SistemaEstoque {
         return produto;
     }
 
-    /** Busca um produto pelo codigo. Custo O(log n) via AVL. */
+    // Busca um produto pelo codigo. Custo O(log n) via AVL
     public Optional<Produto> buscarPorCodigo(int codigo) {
         return catalogoPorCodigo.buscar(codigo);
     }
 
-    /** Busca um produto pelo nome. Custo O(1) medio via Tabela Hash. */
+    // Busca um produto pelo nome. Custo O(1) medio via Tabela Hash
     public Optional<Produto> buscarPorNome(String nome) {
         return indicePorNome.buscar(chaveNome(nome));
     }
 
-    /** Remove um produto de todas as estruturas. */
+    // Remove um produto de todas as estruturas
     public boolean removerProduto(int codigo) {
         Optional<Produto> produtoOpt = buscarPorCodigo(codigo);
         if (produtoOpt.isEmpty()) {
@@ -92,20 +82,15 @@ public class SistemaEstoque {
         return true;
     }
 
-    /** Retorna o catalogo completo ordenado por codigo (percurso em ordem da AVL). */
+    // Retorna o catalogo completo ordenado por codigo (percurso em ordem da AVL).
     public List<Produto> listarCatalogoOrdenadoPorCodigo() {
         return catalogoPorCodigo.emOrdem();
     }
 
-    // ---------------------------------------------------------------
     // Movimentacao de estoque
-    // ---------------------------------------------------------------
 
-    /**
-     * Registra uma venda (saida de estoque). Atualiza a prioridade do
-     * produto na heap e, se necessario, gera pedido automatico de
-     * reposicao (que entra na fila de pedidos).
-     */
+    // Registra uma venda de um produto, reduzindo o estoque e atualizando a
+    // prioridade na heap
     public void registrarVenda(int codigo, int quantidadeVendida) {
         Produto produto = buscarPorCodigo(codigo)
                 .orElseThrow(() -> new NoSuchElementException("Produto nao encontrado: codigo " + codigo));
@@ -115,7 +100,7 @@ public class SistemaEstoque {
         atualizarEstoque(produto, produto.getQuantidadeEstoque() - quantidadeVendida);
     }
 
-    /** Registra entrada manual de estoque (ex.: compra avulsa, ajuste de inventario). */
+    // Registra entrada manual de estoque
     public void registrarEntrada(int codigo, int quantidadeRecebida) {
         Produto produto = buscarPorCodigo(codigo)
                 .orElseThrow(() -> new NoSuchElementException("Produto nao encontrado: codigo " + codigo));
@@ -133,24 +118,24 @@ public class SistemaEstoque {
         }
     }
 
-    // ---------------------------------------------------------------
     // Pedidos de compra (Fila)
-    // ---------------------------------------------------------------
 
-    /** Gera automaticamente um pedido de reposicao e o coloca na fila (FIFO). */
+    // Gera automaticamente um pedido de reposicao e o coloca na fila (FIFO)
     private void gerarPedidoReposicaoAutomatica(Produto produto) {
         if (codigosComReposicaoAutomaticaPendente.contains(produto.getCodigo())) {
-            Log.log("SISTEMA", "Reposicao automatica ja pendente para '" + produto.getNome() + "' -> ignorando duplicata");
+            Log.log("SISTEMA",
+                    "Reposicao automatica ja pendente para '" + produto.getNome() + "' -> ignorando duplicata");
             return;
         }
-        int quantidadeSugerida = Math.max(produto.getEstoqueMinimo() * 2 - produto.getQuantidadeEstoque(), produto.getEstoqueMinimo());
+        int quantidadeSugerida = Math.max(produto.getEstoqueMinimo() * 2 - produto.getQuantidadeEstoque(),
+                produto.getEstoqueMinimo());
         PedidoCompra pedido = new PedidoCompra(produto, quantidadeSugerida, true);
         filaPedidos.enfileirar(pedido);
         codigosComReposicaoAutomaticaPendente.add(produto.getCodigo());
         Log.log("SISTEMA", "Reposicao automatica disparada -> " + pedido);
     }
 
-    /** Permite tambem solicitar manualmente um pedido de compra. */
+    // Permite tambem solicitar manualmente um pedido de compra
     public PedidoCompra solicitarPedidoManual(int codigo, int quantidade) {
         Produto produto = buscarPorCodigo(codigo)
                 .orElseThrow(() -> new NoSuchElementException("Produto nao encontrado: codigo " + codigo));
@@ -160,10 +145,8 @@ public class SistemaEstoque {
         return pedido;
     }
 
-    /**
-     * Processa o proximo pedido da fila (o mais antigo), dando entrada
-     * no estoque do produto correspondente. Retorna o pedido processado.
-     */
+    // Processa o proximo pedido da fila (o mais antigo), dando entrada no estoque
+    // do produto correspondente. Retorna o pedido processado
     public PedidoCompra processarProximoPedido() {
         PedidoCompra pedido = filaPedidos.desenfileirar();
         Produto produto = pedido.getProduto();
@@ -186,11 +169,10 @@ public class SistemaEstoque {
         return filaPedidos.tamanho();
     }
 
-    // ---------------------------------------------------------------
     // Relatorios baseados na Heap
-    // ---------------------------------------------------------------
 
-    /** Produto com a prioridade mais alta de reposicao (menor estoque), sem remover da heap. */
+    // Produto com a prioridade mais alta de reposicao (menor estoque), sem remover
+    // da heap
     public Optional<Produto> produtoMaisCritico() {
         if (heapReposicao.estaVazia()) {
             return Optional.empty();
@@ -198,19 +180,15 @@ public class SistemaEstoque {
         return Optional.of(heapReposicao.espiarMinimo());
     }
 
-    /** Lista os k produtos mais criticos (menor estoque), sem alterar a heap. */
+    // Lista os k produtos mais criticos (menor estoque), sem alterar a heap
     public List<Produto> listarProdutosMaisCriticos(int k) {
         return heapReposicao.obterMenores(k);
     }
 
-    /** Retorna todos os produtos ordenados por estoque crescente, via heapsort. */
+    // Retorna todos os produtos ordenados por estoque crescente, via heapsort
     public List<Produto> ordenarProdutosPorEstoque() {
         return heapReposicao.heapsort();
     }
-
-    // ---------------------------------------------------------------
-    // Utilitarios
-    // ---------------------------------------------------------------
 
     public int totalDeProdutos() {
         return catalogoPorCodigo.tamanho();

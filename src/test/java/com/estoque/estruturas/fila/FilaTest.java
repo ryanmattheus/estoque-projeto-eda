@@ -64,8 +64,8 @@ class FilaTest {
     void tamanhoDeveConsiderarAmbasAsPilhasInternas() {
         fila.enfileirar(1);
         fila.enfileirar(2);
-        fila.desenfileirar(); // move tudo para pilhaSaida, depois remove o "1"
-        fila.enfileirar(3);   // vai para pilhaEntrada novamente
-        assertEquals(2, fila.tamanho()); // restam [2] na saida e [3] na entrada
+        fila.desenfileirar();
+        fila.enfileirar(3);
+        assertEquals(2, fila.tamanho());
     }
 }

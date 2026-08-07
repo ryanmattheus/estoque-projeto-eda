@@ -3,8 +3,6 @@ package com.estoque.modelo;
 /**
  * Representa um pedido de compra (reposicao) de um produto.
  * Os pedidos sao processados EM ORDEM na Fila do sistema (FIFO),
- * seja porque foram gerados automaticamente (estoque abaixo do minimo)
- * ou solicitados manualmente.
  */
 public class PedidoCompra {
 

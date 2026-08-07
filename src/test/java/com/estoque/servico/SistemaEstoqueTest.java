@@ -67,7 +67,7 @@ class SistemaEstoqueTest {
         sistema.cadastrarProduto(1, "Luva", 30, 10, 6.9, "Fornecedor D");
         assertFalse(sistema.existePedidoPendente());
 
-        sistema.registrarVenda(1, 25); // estoque cai para 5, abaixo do minimo (10)
+        sistema.registrarVenda(1, 25);
         assertTrue(sistema.existePedidoPendente());
         assertEquals(5, sistema.buscarPorCodigo(1).orElseThrow().getQuantidadeEstoque());
     }
@@ -80,13 +80,13 @@ class SistemaEstoqueTest {
 
     @Test
     void processarProximoPedidoDeveSeguirOrdemFIFOEAumentarEstoque() {
-        sistema.cadastrarProduto(1, "P1", 2, 10, 1.0, "F"); // gera pedido automatico #1
-        sistema.cadastrarProduto(2, "P2", 1, 10, 1.0, "F"); // gera pedido automatico #2
+        sistema.cadastrarProduto(1, "P1", 2, 10, 1.0, "F");
+        sistema.cadastrarProduto(2, "P2", 1, 10, 1.0, "F");
 
         assertEquals(2, sistema.quantidadePedidosPendentes());
 
         PedidoCompra primeiro = sistema.processarProximoPedido();
-        assertEquals(1, primeiro.getProduto().getCodigo()); // FIFO: o primeiro cadastrado sai primeiro
+        assertEquals(1, primeiro.getProduto().getCodigo());
 
         PedidoCompra segundo = sistema.processarProximoPedido();
         assertEquals(2, segundo.getProduto().getCodigo());
@@ -147,8 +147,8 @@ class SistemaEstoqueTest {
 
     @Test
     void naoDeveGerarPedidosAutomaticosDuplicadosEnquantoUmEstivaPendente() {
-        sistema.cadastrarProduto(1, "Critico", 2, 10, 1.0, "F"); // gera 1 pedido automatico
-        sistema.registrarEntrada(1, 1); // estoque=3, ainda abaixo do minimo, mas ja ha pedido pendente
+        sistema.cadastrarProduto(1, "Critico", 2, 10, 1.0, "F");
+        sistema.registrarEntrada(1, 1);
         assertEquals(1, sistema.quantidadePedidosPendentes());
     }
 }

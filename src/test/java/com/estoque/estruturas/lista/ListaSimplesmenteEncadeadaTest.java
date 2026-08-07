@@ -62,16 +62,16 @@ class ListaSimplesmenteEncadeadaTest {
         lista.inserirFim(3);
         lista.inserirFim(4);
 
-        assertTrue(lista.remover(3)); // meio
+        assertTrue(lista.remover(3));
         assertEquals("[1 -> 2 -> 4]", lista.toString());
 
-        assertTrue(lista.remover(1)); // inicio
+        assertTrue(lista.remover(1));
         assertEquals("[2 -> 4]", lista.toString());
 
-        assertTrue(lista.remover(4)); // fim
+        assertTrue(lista.remover(4));
         assertEquals("[2]", lista.toString());
 
-        assertFalse(lista.remover(99)); // inexistente
+        assertFalse(lista.remover(99));
     }
 
     @Test
@@ -103,7 +103,7 @@ class ListaSimplesmenteEncadeadaTest {
         lista.removerInicio();
         lista.removerInicio();
         assertTrue(lista.estaVazia());
-        // insercao apos esvaziar deve funcionar (fim/inicio resetados corretamente)
+
         lista.inserirFim(99);
         assertEquals(99, lista.verInicio());
         assertEquals(1, lista.tamanho());

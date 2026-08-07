@@ -4,11 +4,11 @@ import java.util.Objects;
 
 /**
  * Representa um produto do catalogo de estoque.
- *
- * O CODIGO e a chave primaria (usada como chave na Arvore AVL) e o NOME
- * e usado como chave de busca na Tabela Hash. A QUANTIDADE EM ESTOQUE e
- * o criterio de prioridade usado na Heap (min-heap): quanto menor o
- * estoque, maior a prioridade de reposicao.
+ * 
+ * O CODIGO: usada como chave na Arvore AVL) e o
+ * NOME: usado como chave de busca na Tabela Hash.
+ * A QUANTIDADE EM ESTOQUE é o criterio de prioridade usado na Heap (min-heap):
+ * quanto menor o estoque, maior a prioridade de reposicao.
  */
 public class Produto {
 
@@ -20,7 +20,7 @@ public class Produto {
     private String fornecedor;
 
     public Produto(int codigo, String nome, int quantidadeEstoque, int estoqueMinimo,
-                    double preco, String fornecedor) {
+            double preco, String fornecedor) {
         this.codigo = codigo;
         this.nome = nome;
         this.quantidadeEstoque = quantidadeEstoque;
@@ -73,20 +73,17 @@ public class Produto {
         this.fornecedor = fornecedor;
     }
 
-    /** Indica se o estoque atual esta abaixo (ou igual) do minimo definido. */
+    // Indica se o estoque atual esta abaixo (ou igual) do minimo definido
     public boolean precisaReposicao() {
         return quantidadeEstoque <= estoqueMinimo;
     }
 
-    /**
-     * Identidade do produto e definida pelo CODIGO (chave unica do catalogo).
-     * Essencial para o funcionamento correto do mapa de posicoes usado
-     * internamente pela MinHeap (item -> indice).
-     */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Produto)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Produto))
+            return false;
         Produto produto = (Produto) o;
         return codigo == produto.codigo;
     }

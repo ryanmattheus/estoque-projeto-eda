@@ -9,11 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-/**
- * Aplicacao de console que demonstra o Sistema de Controle de Estoque com
- * Reposicao Automatica, integrando: Fila (2 pilhas), Heap (min-heap),
- * Arvore AVL e Tabela Hash (chaining).
- */
+// Menu principal
 public class Main {
 
     private static final Scanner leitor = new Scanner(System.in);
@@ -62,11 +58,11 @@ public class Main {
         System.out.println(" 1  - Cadastrar produto");
         System.out.println(" 2  - Buscar produto por codigo");
         System.out.println(" 3  - Buscar produto por nome");
-        System.out.println(" 4  - Listar catalogo ordenado por codigo"); //avl em ordem
-        System.out.println(" 5  - Registrar venda: ");//saida de estoque
+        System.out.println(" 4  - Listar catalogo ordenado por codigo"); // avl em ordem
+        System.out.println(" 5  - Registrar venda");// saida de estoque
         System.out.println(" 6  - Registrar entrada manual de estoque");
-        System.out.println(" 7  - Listar produtos mais criticos ");//Heap
-        System.out.println(" 8  - Processar proximo pedido da fila: "); //Fila = 2 Pilhas
+        System.out.println(" 7  - Listar produtos mais criticos");// Heap
+        System.out.println(" 8  - Processar proximo pedido da fila"); // Fila = 2 Pilhas
         System.out.println(" 9  - Processar TODOS os pedidos pendentes");
         System.out.println(" 10 - Remover produto");
         System.out.println(" 11 - Ordenar todos os produtos por estoque (heapsort)");
@@ -76,6 +72,7 @@ public class Main {
         System.out.print("Escolha uma opcao: ");
     }
 
+    // Metodo para popular o sistema com dados de demonstracao
     private static void popularDadosDemonstracao() {
         System.out.println("\n>> Carregando catalogo inicial de demonstracao...\n");
         sistema.cadastrarProduto(101, "Parafuso Sextavado M8", 500, 100, 0.35, "Fornecedor A");
@@ -88,6 +85,7 @@ public class Main {
         System.out.println(">> Pedidos automaticos pendentes gerados: " + sistema.quantidadePedidosPendentes());
     }
 
+    // Metodo para cadastrar um novo produto no sistema
     private static void cadastrarProduto() {
         System.out.print("Codigo (numero inteiro unico): ");
         int codigo = Integer.parseInt(leitor.nextLine().trim());
@@ -106,6 +104,7 @@ public class Main {
         System.out.println(">> Produto cadastrado: " + produto);
     }
 
+    // Metodo para buscar um produto pelo seu codigo
     private static void buscarPorCodigo() {
         System.out.print("Codigo do produto: ");
         int codigo = Integer.parseInt(leitor.nextLine().trim());
@@ -115,6 +114,7 @@ public class Main {
                         () -> System.out.println(">> Produto nao encontrado."));
     }
 
+    // Metodo para buscar um produto pelo seu nome
     private static void buscarPorNome() {
         System.out.print("Nome (ou parte do nome exata cadastrada): ");
         String nome = leitor.nextLine().trim();
@@ -124,12 +124,15 @@ public class Main {
                         () -> System.out.println(">> Produto nao encontrado."));
     }
 
+    // Metodo para listar o catalogo de produtos ordenado por codigo (usando
+    // percurso em-ordem da AVL)
     private static void listarCatalogoOrdenado() {
         List<Produto> catalogo = sistema.listarCatalogoOrdenadoPorCodigo();
         System.out.println(">> Catalogo (ordenado por codigo via percurso em-ordem da AVL):");
         catalogo.forEach(p -> System.out.println("   " + p));
     }
 
+    // Metodo para registrar uma venda reduzindo o estoque do produto
     private static void registrarVenda() {
         System.out.print("Codigo do produto vendido: ");
         int codigo = Integer.parseInt(leitor.nextLine().trim());
@@ -139,6 +142,7 @@ public class Main {
         System.out.println(">> Venda registrada.");
     }
 
+    // Metodo para registrar uma entrada manual de estoque
     private static void registrarEntrada() {
         System.out.print("Codigo do produto: ");
         int codigo = Integer.parseInt(leitor.nextLine().trim());
@@ -148,21 +152,23 @@ public class Main {
         System.out.println(">> Entrada registrada.");
     }
 
+    // Metodo para listar os produtos em estado critico
     private static void listarProdutosCriticos() { // forma de mostrar apenas os criticos(os que estao abaixo do minimo:
-           List<Produto> criticos = sistema.listarProdutosMaisCriticos(sistema.totalDeProdutos())
-            .stream()
-            .filter(Produto::precisaReposicao)
-            .toList();
+        List<Produto> criticos = sistema.listarProdutosMaisCriticos(sistema.totalDeProdutos())
+                .stream()
+                .filter(Produto::precisaReposicao)
+                .toList();
 
-      if (criticos.isEmpty()) {
-          System.out.println(">> Nenhum produto em estado critico no momento.");
-          return;
-      }
+        if (criticos.isEmpty()) {
+            System.out.println(">> Nenhum produto em estado critico no momento.");
+            return;
+        }
 
-      System.out.println(">> Produtos em estado critico (estoque <= minimo), do mais urgente ao menos urgente:");
-      criticos.forEach(p -> System.out.println("   " + p));
-  }
+        System.out.println(">> Produtos em estado critico (estoque <= minimo), do mais urgente ao menos urgente:");
+        criticos.forEach(p -> System.out.println("   " + p));
+    }
 
+    // Metodo para processar o proximo pedido pendente na fila
     private static void processarProximoPedido() {
         if (!sistema.existePedidoPendente()) {
             System.out.println(">> Nao ha pedidos pendentes na fila.");
@@ -172,6 +178,7 @@ public class Main {
         System.out.println(">> Pedido processado: " + pedido);
     }
 
+    // Metodo para processar todos os pedidos pendentes na fila
     private static void processarTodosOsPedidos() {
         if (!sistema.existePedidoPendente()) {
             System.out.println(">> Nao ha pedidos pendentes na fila.");
@@ -185,6 +192,7 @@ public class Main {
         System.out.println(">> " + total + " pedido(s) processado(s).");
     }
 
+    // Metodo para remover um produto do sistema pelo seu codigo
     private static void removerProduto() {
         System.out.print("Codigo do produto a remover: ");
         int codigo = Integer.parseInt(leitor.nextLine().trim());
@@ -192,12 +200,15 @@ public class Main {
         System.out.println(removido ? ">> Produto removido." : ">> Produto nao encontrado.");
     }
 
+    // Metodo para ordenar os produtos por quantidade em estoque usando heapsort -
+    // sem alterar a heap original
     private static void ordenarPorEstoqueHeapsort() {
         List<Produto> ordenados = sistema.ordenarProdutosPorEstoque();
         System.out.println(">> Produtos ordenados por estoque crescente (heapsort, nao altera a heap original):");
         ordenados.forEach(p -> System.out.println("   " + p));
     }
 
+    // Metodo para alternar o estado dos logs das estruturas de dados
     private static boolean logsAtivos = true;
 
     private static void alternarLogs() {

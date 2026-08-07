@@ -6,14 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Arvore AVL (Arvore Binaria de Busca auto-balanceada) generica.
- *
- * Usada no sistema para indexar o catalogo de produtos pelo CODIGO
- * (chave unica, Comparable), garantindo busca, insercao e remocao em
- * O(log n) mesmo no pior caso, gracas ao balanceamento automatico
- * (fator de balanceamento sempre em {-1, 0, 1}).
- */
 public class ArvoreAVL<K extends Comparable<K>, V> {
 
     private NoAVL<K, V> raiz;
@@ -24,16 +16,13 @@ public class ArvoreAVL<K extends Comparable<K>, V> {
         this.quantidadeElementos = 0;
     }
 
-    // ---------------------------------------------------------------
-    // API publica
-    // ---------------------------------------------------------------
-
-    /** Insere (ou atualiza, se a chave ja existir) um par chave/valor. Custo O(log n). */
+    // Insere (ou atualiza, se a chave ja existir) um par chave/valor. Custo O(log
+    // n)
     public void inserir(K chave, V valor) {
         raiz = inserir(raiz, chave, valor);
     }
 
-    /** Busca o valor associado a chave. Custo O(log n). */
+    // Busca o valor associado a chave. Custo O(log n)
     public Optional<V> buscar(K chave) {
         NoAVL<K, V> atual = raiz;
         while (atual != null) {
@@ -52,7 +41,7 @@ public class ArvoreAVL<K extends Comparable<K>, V> {
         return buscar(chave).isPresent();
     }
 
-    /** Remove o no com a chave informada, se existir. Custo O(log n). */
+    // Remove o no com a chave informada, se existir. Custo O(log n)
     public void remover(K chave) {
         raiz = remover(raiz, chave);
     }
@@ -65,17 +54,15 @@ public class ArvoreAVL<K extends Comparable<K>, V> {
         return quantidadeElementos;
     }
 
-    /** Percurso em ordem (in-order) -> retorna os valores ordenados pela chave. Custo O(n). */
+    // Percurso em ordem (in-order) -> retorna os valores ordenados pela chave.
+    // Custo O(n).
     public List<V> emOrdem() {
         List<V> resultado = new ArrayList<>();
         emOrdem(raiz, resultado);
         return resultado;
     }
 
-    // ---------------------------------------------------------------
     // Insercao (recursiva) + balanceamento
-    // ---------------------------------------------------------------
-
     private NoAVL<K, V> inserir(NoAVL<K, V> no, K chave, V valor) {
         if (no == null) {
             quantidadeElementos++;
@@ -96,10 +83,7 @@ public class ArvoreAVL<K extends Comparable<K>, V> {
         return balancear(no);
     }
 
-    // ---------------------------------------------------------------
     // Remocao (recursiva) + balanceamento
-    // ---------------------------------------------------------------
-
     private NoAVL<K, V> remover(NoAVL<K, V> no, K chave) {
         if (no == null) {
             Log.log("AVL", "remover(" + chave + ") -> chave nao encontrada");
@@ -140,10 +124,7 @@ public class ArvoreAVL<K extends Comparable<K>, V> {
         return no;
     }
 
-    // ---------------------------------------------------------------
     // Balanceamento AVL (rotacoes)
-    // ---------------------------------------------------------------
-
     private NoAVL<K, V> balancear(NoAVL<K, V> no) {
         atualizarAltura(no);
         int fb = fatorBalanceamento(no);

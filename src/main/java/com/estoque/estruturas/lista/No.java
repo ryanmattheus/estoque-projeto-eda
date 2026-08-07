@@ -1,9 +1,5 @@
 package com.estoque.estruturas.lista;
 
-/**
- * No (nodo) de uma Lista Simplesmente Encadeada.
- * Armazena um valor generico e a referencia para o proximo no da lista.
- */
 public class No<T> {
 
     private T valor;
