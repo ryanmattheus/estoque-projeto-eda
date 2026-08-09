@@ -36,7 +36,7 @@ com.estoque
 └── app         -> Main                     (menu interativo de console)
 ```
 
-### Dependência entre estruturas (conforme exigido pelo enunciado)
+### Dependência entre estruturas 
 
 ```
 ListaSimplesmenteEncadeada
