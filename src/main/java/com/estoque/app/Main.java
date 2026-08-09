@@ -17,10 +17,10 @@ public class Main {
 
     public static void main(String[] args) {
         Locale.setDefault(new Locale("pt", "BR"));
-        System.out.println("=================================================================");
+        System.out.println("===============================================================");
         System.out.println(" SISTEMA DE CONTROLE DE ESTOQUE COM REPOSICAO AUTOMATICA");
         System.out.println(" EDA/LEDA 2026.1 - Fila(2 Pilhas) | Heap | Arvore AVL | Tabela Hash");
-        System.out.println("=================================================================");
+        System.out.println("===============================================================");
 
         popularDadosDemonstracao();
 
@@ -49,7 +49,6 @@ public class Main {
                 System.out.println(">> Erro: " + e.getMessage());
             }
         }
-        System.out.println("Encerrando o sistema. Ate logo!");
     }
 
     private static void exibirMenu() {

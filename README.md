@@ -170,15 +170,3 @@ src/test/java/com/estoque/
 ├── estruturas/hash/TabelaHashTest.java
 └── servico/SistemaEstoqueTest.java
 ```
-
-Rodar com `mvn test`.
-
-## 8. Observação sobre o ambiente de geração deste projeto
-
-Este projeto foi escrito neste ambiente sem acesso a `javac`/Maven
-para compilação real (apenas JRE headless, sem rede para baixar o
-JDK completo ou as dependências do JUnit). O código foi revisado
-manualmente com cuidado, mas **antes da entrega, rode
-`mvn compile` e `mvn test` no seu ambiente** para confirmar que tudo
-compila e passa sem erros, e ajuste eventuais pequenos problemas de
-sintaxe que só um compilador real detectaria.
